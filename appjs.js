@@ -2,13 +2,13 @@ var app, express, hue, io, lightOn, request, server, uuid, ws;
 
 express = require('express');
 request = require('request');
-var hue = require('hue-module');
+// var hue = require('hue-module');
 
 // hue.discover(function(e) {
 //     console.log(e)
 // });
-hue.load("192.168.178.19", "174fb5a039dabc8f3b1a51f02a78ec7f");
-
+// hue.load("192.168.178.19", "174fb5a039dabc8f3b1a51f02a78ec7f");
+var url = "http://192.168.178.19/api/174fb5a039dabc8f3b1a51f02a78ec7f/lights/1/state";
 
 app = express();
 ws = require('websocket.io');
@@ -84,19 +84,33 @@ io.on('connection', function(socket) {
             case 'lights':
                 if (msg.data == 'on') {
                     console.log("Turn light on");
-                    hue.light(1, function(light) {
-                        hue.change(light.set({
+                    request({
+                        url: url,
+                        method: 'PUT',
+                        json: {
                             "on": true,
                             "bri": msg.data.bri
-                        }));
-                    });
+                        }
+                    }, function(e) {
+                            console.log(e);
+                        })
+                // hue.light(1, function(light) {
+                //     hue.change(light.set({
+                //         "on": true,
+                //         "bri": msg.data.bri
+                //     }));
+                // });
                 } else if (msg.data == 'off') {
                     console.log("Turn light off");
-                    hue.light(1, function(light) {
-                        hue.change(light.set({
+                    request({
+                        url: url,
+                        method: 'PUT',
+                        json: {
                             "on": false
-                        }));
-                    });
+                        }
+                    }, function(e) {
+                            console.log(e);
+                        })
                 }
 
                 break;
