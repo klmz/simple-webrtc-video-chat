@@ -1,4 +1,11 @@
 express = require 'express'
+request = require 'request'
+hue = require 'node-hue-api'
+
+
+hue.nupnpSearch((bridge) -> console.log 'Bridges found'+JSON.stringify bridge);
+
+
 app = express()
 ws = require 'websocket.io'
 uuid = require 'node-uuid'
@@ -10,7 +17,7 @@ app.get '/viewer/:room', (req, res) ->
 
 app.get '/broadcast/:room', (req, res) ->
   res.render 'broadcast.jade', params: req.query, room_count: io.clientsByRoom[req.params.room]?.length || 0
-
+lightOn = false
 server =  app.listen 5002
 console.log 'started'
 io = ws.attach server
@@ -49,5 +56,8 @@ io.on 'connection', (socket) ->
             sock.send(JSON.stringify msg)
       when 'lights'
         console.log 'test'
+        lightOn = !lightOn
+        request({ url: 'http://localhost:3333/api/newdeveloper/lights/1/state', method: 'PUT', json: {"on":lightOn}}, (e) -> 
+           console.log e)
       when 'close'
         socket.close()

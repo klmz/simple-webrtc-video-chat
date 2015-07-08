@@ -95,15 +95,6 @@ function broadcast() {
             } catch ( e ) {}
         });
 
-    var button = document.getElementsByTagName("button");
-    console.log(button);
-    button[0].onclick = function() {
-        console.log('test');
-        socket.send(JSON.stringify({
-            type: 'lights',
-            data: 'DoSomething'
-        }));
-    }
 }
 
 function start() {
@@ -115,6 +106,15 @@ function start() {
             data: description
         }));
     }, null, mediaConstraints);
+    var button = document.getElementsByTagName("button");
+    console.log(button);
+    button[0].onclick = function() {
+        console.log('test');
+        socket.send(JSON.stringify({
+            type: 'lights',
+            data: 'DoSomething'
+        }));
+    }
 }
 
 window.onload = function() {
