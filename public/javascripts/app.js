@@ -106,6 +106,16 @@ function start() {
             data: description
         }));
     }, null, mediaConstraints);
+
+}
+
+window.onload = function() {
+    if (shouldBroadcast) {
+        broadcast();
+    } else {
+        start();
+    }
+
     var button = document.getElementsByTagName("button");
     console.log(button);
     button[0].onclick = function() {
@@ -114,14 +124,6 @@ function start() {
             type: 'lights',
             data: 'DoSomething'
         }));
-    }
-}
-
-window.onload = function() {
-    if (shouldBroadcast) {
-        broadcast();
-    } else {
-        start();
     }
 };
 
