@@ -118,11 +118,13 @@ window.onload = function() {
 
     var btnOn = document.getElementById('on');
     var btnOff = document.getElementById('off');
+    var rngBri = document.getElementById('brightness');
     btnOn.onclick = function() {
         console.log('test');
         socket.send(JSON.stringify({
             type: 'lights',
-            data: 'on'
+            data: 'on',
+            bri: rngBri.value
         }));
     }
 

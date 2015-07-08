@@ -84,10 +84,10 @@ io.on('connection', function(socket) {
             case 'lights':
                 if (msg.data == 'on') {
                     console.log("Turn light on");
-                    hue.light(2, function(light) {
+                    hue.light(1, function(light) {
                         hue.change(light.set({
                             "on": true,
-                            "bri": 255
+                            "bri": msg.data.bri
                         }));
                     });
                 } else if (msg.data == 'off') {
