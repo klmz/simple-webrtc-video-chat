@@ -8,7 +8,7 @@ request = require('request');
 //     console.log(e)
 // });
 // hue.load("192.168.178.19", "174fb5a039dabc8f3b1a51f02a78ec7f");
-var url = "http://192.168.178.19/api/174fb5a039dabc8f3b1a51f02a78ec7f/lights/1/state";
+var hueUrl = "http://192.168.178.19/api/174fb5a039dabc8f3b1a51f02a78ec7f/lights/1/state";
 
 app = express();
 ws = require('websocket.io');
@@ -85,7 +85,7 @@ io.on('connection', function(socket) {
                 if (msg.data == 'on') {
                     console.log("Turn light on");
                     request({
-                        url: url,
+                        url: hueUrl,
                         method: 'PUT',
                         json: {
                             "on": true,
@@ -103,7 +103,7 @@ io.on('connection', function(socket) {
                 } else if (msg.data == 'off') {
                     console.log("Turn light off");
                     request({
-                        url: url,
+                        url: hueUrl,
                         method: 'PUT',
                         json: {
                             "on": false
