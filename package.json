@@ -12,6 +12,7 @@
   "dependencies": {
     "coffee-script": "*",
     "express": "3",
+    "hue-module": "0.0.9",
     "jade": "*",
     "node-hue-api": "^1.0.5",
     "node-uuid": "*",

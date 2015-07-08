@@ -2,6 +2,13 @@ var app, express, hue, io, lightOn, request, server, uuid, ws;
 
 express = require('express');
 request = require('request');
+var hue = require('hue-module');
+
+// hue.discover(function(e) {
+//     console.log(e)
+// });
+hue.load("192.168.178.19", "174fb5a039dabc8f3b1a51f02a78ec7f");
+
 
 app = express();
 ws = require('websocket.io');
@@ -24,7 +31,7 @@ app.get('/broadcast/:room', function(req, res) {
     });
 });
 
-lightOn = false;
+lightOn = true;
 
 server = app.listen(5002);
 
@@ -75,17 +82,23 @@ io.on('connection', function(socket) {
                 return results;
                 break;
             case 'lights':
-                console.log('test');
-                lightOn = !lightOn;
-                return request({
-                    url: 'http://localhost:3333/api/newdeveloper/lights/1/state',
-                    method: 'PUT',
-                    json: {
-                        "on": lightOn
-                    }
-                }, function(e) {
-                        return console.log(e);
+                if (msg.data == 'on') {
+                    console.log("Turn light on");
+                    hue.light(2, function(light) {
+                        hue.change(light.set({
+                            "on": true
+                        }));
                     });
+                } else if (msg.data == 'off') {
+                    console.log("Turn light off");
+                    hue.light(2, function(light) {
+                        hue.change(light.set({
+                            "on": false
+                        }));
+                    });
+                }
+
+                break;
             case 'close':
                 return socket.close();
         }

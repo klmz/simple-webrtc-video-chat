@@ -116,15 +116,25 @@ window.onload = function() {
         start();
     }
 
-    var button = document.getElementsByTagName("button");
-    console.log(button);
-    button[0].onclick = function() {
+    var btnOn = document.getElementById('on');
+    var btnOff = document.getElementById('off');
+    btnOn.onclick = function() {
         console.log('test');
         socket.send(JSON.stringify({
             type: 'lights',
-            data: 'DoSomething'
+            data: 'on'
         }));
     }
+
+    btnOff.onclick = function() {
+        console.log('test');
+        socket.send(JSON.stringify({
+            type: 'lights',
+            data: 'off'
+        }));
+    }
+
+
 };
 
 window.onbeforeunload = function() {
