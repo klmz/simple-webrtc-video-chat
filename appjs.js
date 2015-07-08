@@ -91,7 +91,7 @@ io.on('connection', function(socket) {
                     });
                 } else if (msg.data == 'off') {
                     console.log("Turn light off");
-                    hue.light(2, function(light) {
+                    hue.light(1, function(light) {
                         hue.change(light.set({
                             "on": false
                         }));
