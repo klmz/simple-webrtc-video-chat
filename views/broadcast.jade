@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  script(type='text/javascript').
+    var shouldBroadcast = true;
+    var room = "#{ params.room }";
+    var initCall = #{ room_count > 0 };
+
+  video#vid1(width='100%', height='100%')
+

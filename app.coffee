@@ -5,21 +5,26 @@ uuid = require 'node-uuid'
 
 app.use express.static './public'
 
-app.get '/:room', (req, res) ->
-  res.render 'index.jade', params: req.query, room_count: io.clientsByRoom[req.params.room]?.length || 0
+app.get '/viewer/:room', (req, res) ->
+  res.render 'viewer.jade', params: req.query, room_count: io.clientsByRoom[req.params.room]?.length || 0
 
-server =  app.listen 3002
+app.get '/broadcast/:room', (req, res) ->
+  res.render 'broadcast.jade', params: req.query, room_count: io.clientsByRoom[req.params.room]?.length || 0
 
+server =  app.listen 5002
+console.log 'started'
 io = ws.attach server
 
 io.clientsById ||= {}
 io.clientsByRoom ||= {}
 
 io.on 'connection', (socket) ->
-  room = /\/(.+)/.exec(socket.req.url)[1]
+  url = /\/(.+)/.exec(socket.req.url)[1]
+  index = url.lastIndexOf("/");
+  room = url.substr(index)
   socket.id = uuid.v1()
   socket.room = room
-
+  console.log room
   if !room
     socket.close()
     return
@@ -42,6 +47,7 @@ io.on 'connection', (socket) ->
         for sock in io.clientsByRoom[socket.room]
           if sock.id != socket.id
             sock.send(JSON.stringify msg)
-
+      when 'lights'
+        console.log 'test'
       when 'close'
         socket.close()
